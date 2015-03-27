@@ -2,7 +2,7 @@ package reader
 
 import (
 	"errors"
-	"fmt"
+	// "fmt"
 	. "plum/types"
 	"regexp"
 	"strconv"
@@ -47,9 +47,9 @@ func tokenize(str string) []string {
 		}
 		results = append(results, group[1])
 	}
-	for _, v := range results {
-		fmt.Print(v + "\n")
-	}
+	// for _, v := range results {
+	// 	fmt.Print(v + "\n")
+	// }
 	return results
 }
 
