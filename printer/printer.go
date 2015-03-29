@@ -6,7 +6,7 @@ import (
 )
 
 import (
-	"plum/types"
+	"github.com/sllt/plum/types"
 )
 
 func Pr_list(lst []types.PlumType, pr bool,

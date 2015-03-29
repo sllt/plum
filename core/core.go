@@ -8,10 +8,10 @@ import (
 )
 
 import (
-	"plum/printer"
-	"plum/reader"
-	"plum/readline"
-	. "plum/types"
+	"github.com/sllt/plum/printer"
+	"github.com/sllt/plum/reader"
+	"github.com/sllt/plum/readline"
+	. "github.com/sllt/plum/types"
 )
 
 // Errors/Exceptions
