@@ -459,9 +459,14 @@ var NS = map[string]PlumType{
 		return value, nil
 	},
 	"-": func(a []PlumType) (PlumType, error) {
-		var value int = 0
-		for _, v := range a {
-			value -= v.(int)
+		var value int
+		if len(a) <= 1 {
+			value = 0
+		} else {
+			value = a[0].(int)
+		}
+		for i := 1; i < len(a); i++ {
+			value -= a[i].(int)
 		}
 		return value, nil
 	},
@@ -473,7 +478,14 @@ var NS = map[string]PlumType{
 		return value, nil
 	},
 	"/": func(a []PlumType) (PlumType, error) {
-		var value int = a[0].(int)
+		var value int
+		if len(a) < 1 {
+			return nil, errors.New("the expected number of arguments does not match the given number")
+		} else if len(a) == 1 {
+			return 1 / (a[0].(int)), nil
+		} else {
+			value = a[0].(int)
+		}
 		for i := 1; i < len(a); i++ {
 			value /= a[i].(int)
 		}
