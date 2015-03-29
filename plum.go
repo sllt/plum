@@ -175,7 +175,7 @@ func EVAL(ast PlumType, env EnvType) (PlumType, error) {
 			a0sym = a0.(Symbol).Val
 		}
 		switch a0sym {
-		case "def!":
+		case "define":
 			res, e := EVAL(a2, env)
 			if e != nil {
 				return nil, e
@@ -206,7 +206,7 @@ func EVAL(ast PlumType, env EnvType) (PlumType, error) {
 			return a1, nil
 		case "quasiquote":
 			ast = quasiquote(a1)
-		case "defmacro!":
+		case "defmacro":
 			fn, e := EVAL(a2, env)
 			fn = fn.(PlumFunc).SetMacro()
 			if e != nil {
@@ -330,11 +330,12 @@ func main() {
 	repl_env.Set(Symbol{"*ARGV*"}, List{})
 
 	// core.Plum: defined using the language itself
-	repl("(def! not (fn* (a) (if a false true)))")
-	repl("(def! load-file (fn* (f) (eval (read-string (str \"(do \" (slurp f) \")\")))))")
-	repl("(defmacro! cond (fn* (& xs) (if (> (count xs) 0) (list 'if (first xs) (if (> (count xs) 1) (nth xs 1) (throw \"odd number of forms to cond\")) (cons 'cond (rest (rest xs)))))))")
-	repl("(defmacro! or (fn* (& xs) (if (empty? xs) nil (if (= 1 (count xs)) (first xs) `(let* (or_FIXME ~(first xs)) (if or_FIXME or_FIXME (or ~@(rest xs))))))))")
-
+	repl("(define not (fn* (a) (if a false true)))")
+	repl("(define load-file (fn* (f) (eval (read-string (str \"(do \" (slurp f) \")\")))))")
+	repl("(defmacro cond (fn* (& xs) (if (> (count xs) 0) (list 'if (first xs) (if (> (count xs) 1) (nth xs 1) (throw \"odd number of forms to cond\")) (cons 'cond (rest (rest xs)))))))")
+	repl("(defmacro or (fn* (& xs) (if (empty? xs) nil (if (= 1 (count xs)) (first xs) `(let* (or_FIXME ~(first xs)) (if or_FIXME or_FIXME (or ~@(rest xs))))))))")
+	repl("(define not1 (fn* (a) (if a false true)))")
+	repl(`(load-file "lib/base.p")`)
 	// called with Plum script to load and eval
 	if len(os.Args) > 1 {
 		args := make([]PlumType, 0, len(os.Args)-2)
