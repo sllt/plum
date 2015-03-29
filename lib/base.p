@@ -7,3 +7,8 @@
 
 (define max (fn* [l] (if (= (count l) 1) (first l) (if (> (first l) (max (rest l))) (car l) (max (cdr l))))))
 (define min (fn* [l] (if (= (count l) 1) (first l) (if (< (first l) (min (rest l))) (car l) (min (cdr l))))))
+
+(define inc (fn* [a] (+ a 1)))
+(define dec (fn* [a] (- a 1)))
+
+(define length count)
