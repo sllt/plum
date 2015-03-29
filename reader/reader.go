@@ -2,11 +2,14 @@ package reader
 
 import (
 	"errors"
-	// "fmt"
-	. "plum/types"
 	"regexp"
 	"strconv"
 	"strings"
+	//"fmt"
+)
+
+import (
+	. "plum/types"
 )
 
 type Reader interface {
@@ -47,14 +50,11 @@ func tokenize(str string) []string {
 		}
 		results = append(results, group[1])
 	}
-	// for _, v := range results {
-	// 	fmt.Print(v + "\n")
-	// }
 	return results
 }
 
-func read_atom(r Reader) (PlumType, error) {
-	token := r.next()
+func read_atom(rdr Reader) (PlumType, error) {
+	token := rdr.next()
 	if token == nil {
 		return nil, errors.New("read_atom underflow")
 	}
@@ -122,11 +122,11 @@ func read_vector(rdr Reader) (PlumType, error) {
 }
 
 func read_hash_map(rdr Reader) (PlumType, error) {
-	plum_lst, e := read_list(rdr, "{", "}")
+	Plum_lst, e := read_list(rdr, "{", "}")
 	if e != nil {
 		return nil, e
 	}
-	return NewHashMap(plum_lst)
+	return NewHashMap(Plum_lst)
 }
 
 func read_form(rdr Reader) (PlumType, error) {

@@ -17,8 +17,8 @@ func (e PlumError) Error() string {
 }
 
 // General types
-
-type PlumType interface{}
+type PlumType interface {
+}
 
 type EnvType interface {
 	Find(key Symbol) EnvType
@@ -44,7 +44,7 @@ func True_Q(obj PlumType) bool {
 	}
 }
 
-func Flase_Q(obj PlumType) bool {
+func False_Q(obj PlumType) bool {
 	switch tobj := obj.(type) {
 	case bool:
 		return tobj == false
@@ -104,12 +104,13 @@ func Func_Q(obj PlumType) bool {
 }
 
 type PlumFunc struct {
-	Eval    func(PlumType, EnvType)
+	Eval    func(PlumType, EnvType) (PlumType, error)
 	Exp     PlumType
 	Env     EnvType
 	Params  PlumType
 	IsMacro bool
 	GenEnv  func(EnvType, PlumType, PlumType) (EnvType, error)
+	Meta    PlumType
 }
 
 func PlumFunc_Q(obj PlumType) bool {
@@ -128,23 +129,24 @@ func (f PlumFunc) GetMacro() bool {
 	return f.IsMacro
 }
 
-// Take either a PlumFunc or regular function and apply it to the arguments
-// func Apply(f_mt PlumType, a []PlumType) (PlumType, error) {
-// 	switch f := f_mt.(type) {
-// 	case PlumType:
-// 		env, e := f.GenEnv(f.Env, f.Params, List{a, nil})
-// 		if e != nil {
-// 			return nil
-// 		}
-// 		return f.Eval(f.Exp, env)
-// 	case Func:
-// 		return f.Fn(a)
-// 	case func([]PlumType) (PlumType, error):
-// 		return f(a)
-// 	default:
-// 		return nil, errors.New("Invalid function to Apply")
-// 	}
-// }
+// Take either a PlumFunc or regular function and apply it to the
+// arguments
+func Apply(f_mt PlumType, a []PlumType) (PlumType, error) {
+	switch f := f_mt.(type) {
+	case PlumFunc:
+		env, e := f.GenEnv(f.Env, f.Params, List{a, nil})
+		if e != nil {
+			return nil, e
+		}
+		return f.Eval(f.Exp, env)
+	case Func:
+		return f.Fn(a)
+	case func([]PlumType) (PlumType, error):
+		return f(a)
+	default:
+		return nil, errors.New("Invalid function to Apply")
+	}
+}
 
 // Lists
 type List struct {
@@ -188,7 +190,6 @@ func GetSlice(seq PlumType) ([]PlumType, error) {
 }
 
 // Hash Maps
-
 type HashMap struct {
 	Val  map[string]PlumType
 	Meta PlumType
@@ -216,7 +217,6 @@ func NewHashMap(seq PlumType) (PlumType, error) {
 func HashMap_Q(obj PlumType) bool {
 	if obj == nil {
 		return false
-
 	}
 	return reflect.TypeOf(obj).Name() == "HashMap"
 }
@@ -227,7 +227,7 @@ type Atom struct {
 	Meta PlumType
 }
 
-func (a *Atom) Set(val *PlumType) PlumType {
+func (a *Atom) Set(val PlumType) PlumType {
 	a.Val = val
 	return a
 }
@@ -250,7 +250,7 @@ func _obj_type(obj PlumType) string {
 	return reflect.TypeOf(obj).Name()
 }
 
-func Sequetial_Q(seq PlumType) bool {
+func Sequential_Q(seq PlumType) bool {
 	if seq == nil {
 		return false
 	}
@@ -261,11 +261,12 @@ func Sequetial_Q(seq PlumType) bool {
 func Equal_Q(a PlumType, b PlumType) bool {
 	ota := reflect.TypeOf(a)
 	otb := reflect.TypeOf(b)
-	if !(ota == otb) || (Sequetial_Q(a) && Sequetial_Q(b)) {
+	if !((ota == otb) || (Sequential_Q(a) && Sequential_Q(b))) {
 		return false
-
 	}
-
+	//av := reflect.ValueOf(a); bv := reflect.ValueOf(b)
+	//fmt.Printf("here2: %#v\n", reflect.TypeOf(a).Name())
+	//switch reflect.TypeOf(a).Name() {
 	switch a.(type) {
 	case Symbol:
 		return a.(Symbol).Val == b.(Symbol).Val
@@ -275,7 +276,7 @@ func Equal_Q(a PlumType, b PlumType) bool {
 		if len(as) != len(bs) {
 			return false
 		}
-		for i := 0; i < len(as); i++ {
+		for i := 0; i < len(as); i += 1 {
 			if !Equal_Q(as[i], bs[i]) {
 				return false
 			}
@@ -287,7 +288,7 @@ func Equal_Q(a PlumType, b PlumType) bool {
 		if len(as) != len(bs) {
 			return false
 		}
-		for i := 0; i < len(as); i++ {
+		for i := 0; i < len(as); i += 1 {
 			if !Equal_Q(as[i], bs[i]) {
 				return false
 			}

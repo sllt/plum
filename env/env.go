@@ -2,7 +2,10 @@ package env
 
 import (
 	"errors"
-	"fmt"
+	//"fmt"
+)
+
+import (
 	. "plum/types"
 )
 
@@ -13,6 +16,7 @@ type Env struct {
 
 func NewEnv(outer EnvType, binds_mt PlumType, exprs_mt PlumType) (EnvType, error) {
 	env := Env{map[string]PlumType{}, outer}
+
 	if binds_mt != nil && exprs_mt != nil {
 		binds, e := GetSlice(binds_mt)
 		if e != nil {
@@ -22,10 +26,10 @@ func NewEnv(outer EnvType, binds_mt PlumType, exprs_mt PlumType) (EnvType, error
 		if e != nil {
 			return nil, e
 		}
-		// Return a new Env with symbols in binds boudn to corresponding values in exprs
-		for i := 0; i < len(binds); i++ {
+		// Return a new Env with symbols in binds boudn to
+		// corresponding values in exprs
+		for i := 0; i < len(binds); i += 1 {
 			if Symbol_Q(binds[i]) && binds[i].(Symbol).Val == "&" {
-				fmt.Print(binds[i].(Symbol).Val)
 				env.data[binds[i+1].(Symbol).Val] = List{exprs[i:], nil}
 				break
 			} else {
@@ -33,6 +37,7 @@ func NewEnv(outer EnvType, binds_mt PlumType, exprs_mt PlumType) (EnvType, error
 			}
 		}
 	}
+	//return &et, nil
 	return env, nil
 }
 

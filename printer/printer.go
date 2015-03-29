@@ -6,10 +6,10 @@ import (
 )
 
 import (
-	. "plum/types"
+	"plum/types"
 )
 
-func Pr_list(lst []PlumType, pr bool,
+func Pr_list(lst []types.PlumType, pr bool,
 	start string, end string, join string) string {
 	str_list := make([]string, 0, len(lst))
 	for _, e := range lst {
@@ -18,13 +18,13 @@ func Pr_list(lst []PlumType, pr bool,
 	return start + strings.Join(str_list, join) + end
 }
 
-func Pr_str(obj PlumType, print_readably bool) string {
+func Pr_str(obj types.PlumType, print_readably bool) string {
 	switch tobj := obj.(type) {
-	case List:
+	case types.List:
 		return Pr_list(tobj.Val, print_readably, "(", ")", " ")
-	case Vector:
+	case types.Vector:
 		return Pr_list(tobj.Val, print_readably, "[", "]", " ")
-	case HashMap:
+	case types.HashMap:
 		str_list := make([]string, 0, len(tobj.Val)*2)
 		for k, v := range tobj.Val {
 			str_list = append(str_list, Pr_str(k, print_readably))
@@ -43,17 +43,17 @@ func Pr_str(obj PlumType, print_readably bool) string {
 		} else {
 			return tobj
 		}
-	case Symbol:
+	case types.Symbol:
 		return tobj.Val
 	case nil:
 		return "nil"
-	case PlumFunc:
+	case types.PlumFunc:
 		return "(fn* " +
 			Pr_str(tobj.Params, true) + " " +
 			Pr_str(tobj.Exp, true) + ")"
-	case func([]PlumType) (PlumType, error):
+	case func([]types.PlumType) (types.PlumType, error):
 		return fmt.Sprintf("<function %v>", obj)
-	case *Atom:
+	case *types.Atom:
 		return "(atom " +
 			Pr_str(tobj.Val, true) + ")"
 	default:
