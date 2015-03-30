@@ -16,7 +16,6 @@ Overview
 ;; lambda
 ((fn* [a b] (+ a b)) 1 2)
 
-;; macros
 (define max 
         (fn* [l] 
             (if (= (count l) 1) 
@@ -24,5 +23,8 @@ Overview
                 (if (> (first l) (max (rest l)))
                     (car l)
                     (max (cdr l))))))
+;; macros
+
+(defmacro unless (fn* [prd a b] `(if (not ~prd) ~a ~b)))
 
 ```
