@@ -8,10 +8,10 @@ import (
 )
 
 import (
-	"github.com/sllt/plum/printer"
-	"github.com/sllt/plum/reader"
-	"github.com/sllt/plum/readline"
-	. "github.com/sllt/plum/types"
+	"plum/printer"
+	"plum/reader"
+	"plum/readline"
+	. "plum/types"
 )
 
 // Errors/Exceptions
@@ -261,6 +261,19 @@ func apply(a []PlumType) (PlumType, error) {
 		return nil, e
 	}
 	args = append(args, last...)
+	return Apply(f, args)
+}
+
+func funcall(a []PlumType) (PlumType, error) {
+	if len(a) < 1 {
+		return nil, errors.New("funcall requires at least 1 args")
+	}
+	f := a[0]
+	args := []PlumType{}
+	for _, b := range a[1:len(a)] {
+		args = append(args, b)
+		// fmt.Println(b)
+	}
 	return Apply(f, args)
 }
 
@@ -523,16 +536,17 @@ var NS = map[string]PlumType{
 	"sequential?": func(a []PlumType) (PlumType, error) {
 		return Sequential_Q(a[0]), nil
 	},
-	"cons":   cons,
-	"concat": concat,
-	"nth":    nth,
-	"first":  first,
-	"rest":   rest,
-	"empty?": empty_Q,
-	"count":  count,
-	"apply":  apply,
-	"map":    do_map,
-	"conj":   conj,
+	"cons":    cons,
+	"concat":  concat,
+	"nth":     nth,
+	"first":   first,
+	"rest":    rest,
+	"empty?":  empty_Q,
+	"count":   count,
+	"apply":   apply,
+	"funcall": funcall,
+	"map":     do_map,
+	"conj":    conj,
 
 	"with-meta": with_meta,
 	"meta":      meta,

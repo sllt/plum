@@ -9,7 +9,7 @@ import (
 )
 
 import (
-	. "github.com/sllt/plum/types"
+	. "plum/types"
 )
 
 type Reader interface {

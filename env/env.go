@@ -6,7 +6,7 @@ import (
 )
 
 import (
-	. "github.com/sllt/plum/types"
+	. "plum/types"
 )
 
 type Env struct {
