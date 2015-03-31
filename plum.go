@@ -8,12 +8,13 @@ import (
 )
 
 import (
-	"github.com/sllt/plum/core"
-	. "github.com/sllt/plum/env"
-	"github.com/sllt/plum/printer"
-	"github.com/sllt/plum/reader"
-	"github.com/sllt/plum/readline"
-	. "github.com/sllt/plum/types"
+	"plum/constants"
+	"plum/core"
+	. "plum/env"
+	"plum/printer"
+	"plum/reader"
+	"plum/readline"
+	. "plum/types"
 )
 
 // read
@@ -175,13 +176,13 @@ func EVAL(ast PlumType, env EnvType) (PlumType, error) {
 			a0sym = a0.(Symbol).Val
 		}
 		switch a0sym {
-		case "define":
+		case constants.DEFINE:
 			res, e := EVAL(a2, env)
 			if e != nil {
 				return nil, e
 			}
 			return env.Set(a1.(Symbol), res), nil
-		case "let*":
+		case constants.LET:
 			let_env, e := NewEnv(env, nil, nil)
 			if e != nil {
 				return nil, e
@@ -202,20 +203,20 @@ func EVAL(ast PlumType, env EnvType) (PlumType, error) {
 			}
 			ast = a2
 			env = let_env
-		case "quote":
+		case constants.QUOTE:
 			return a1, nil
-		case "quasiquote":
+		case constants.QUASIQUOTE:
 			ast = quasiquote(a1)
-		case "defmacro":
+		case constants.DEFMACRO:
 			fn, e := EVAL(a2, env)
 			fn = fn.(PlumFunc).SetMacro()
 			if e != nil {
 				return nil, e
 			}
 			return env.Set(a1.(Symbol), fn), nil
-		case "macroexpand":
+		case constants.MACROEXPAND:
 			return macroexpand(a1, env)
-		case "try*":
+		case constants.TRY:
 			var exc PlumType
 			exp, e := EVAL(a1, env)
 			if e == nil {
@@ -243,7 +244,7 @@ func EVAL(ast PlumType, env EnvType) (PlumType, error) {
 				}
 				return nil, e
 			}
-		case "do":
+		case constants.DO:
 			lst := ast.(List).Val
 			_, e := eval_ast(List{lst[1 : len(lst)-1], nil}, env)
 			if e != nil {
@@ -253,7 +254,7 @@ func EVAL(ast PlumType, env EnvType) (PlumType, error) {
 				return nil, nil
 			}
 			ast = lst[len(lst)-1]
-		case "if":
+		case constants.IF:
 			cond, e := EVAL(a1, env)
 			if e != nil {
 				return nil, e
