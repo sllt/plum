@@ -27,4 +27,9 @@ Overview
 
 (defmacro unless (fn* [prd a b] `(if (not ~prd) ~a ~b)))
 
+;; apply
+
+(funcall + 1 2 3)
+(apply + (list 1 2 3))
+
 ```
