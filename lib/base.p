@@ -12,3 +12,11 @@
 (define dec (fn* [a] (- a 1)))
 
 (define length count)
+
+(define reduce
+  (fn* (f init xs)
+    (if (> (count xs) 0)
+      (reduce f (f init (first xs)) (rest xs))
+      init)))
+
+(defmacro defn (fn* [name args body] `(define ~name (fn* ~args ~body))))
