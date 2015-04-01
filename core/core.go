@@ -559,4 +559,5 @@ var NS = map[string]PlumType{
 	"deref":  deref,
 	"reset!": reset_BANG,
 	"swap!":  swap_BANG,
+	"exec":   Exec,
 }
