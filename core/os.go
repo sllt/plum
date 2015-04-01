@@ -5,13 +5,15 @@ import (
 	"fmt"
 	"os/exec"
 	. "plum/types"
+	"strings"
 )
 
 func Exec(a []PlumType) (PlumType, error) {
 	cmd := a[0]
 	switch tcmd := cmd.(type) {
 	case string:
-		o, _ := exec.Command(tcmd).Output()
+		any := strings.Split(tcmd, " ")
+		o, _ := exec.Command(any[0], any[1:]...).Output()
 		fmt.Println(string(o))
 		return nil, nil
 	default:
