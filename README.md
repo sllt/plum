@@ -27,6 +27,9 @@ Overview
 
 (defmacro unless (fn* [prd a b] `(if (not ~prd) ~a ~b)))
 
+(defmacro defn (fn* [name args body] `(define ~name (fn* ~args ~body))))
+`))
+
 ;; apply
 
 (funcall + 1 2 3)
