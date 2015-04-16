@@ -465,9 +465,14 @@ var NS = map[string]PlumType{
 		return a[0].(int) >= a[1].(int), nil
 	},
 	"+": func(a []PlumType) (PlumType, error) {
-		var value int = 0
+		var value float64 = 0
 		for _, v := range a {
-			value += v.(int)
+			switch v.(type) {
+			case float64:
+				value += v.(float64)
+			case int:
+				value += float64(v.(int))
+			}
 		}
 		return value, nil
 	},
