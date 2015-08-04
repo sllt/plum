@@ -40,11 +40,17 @@ func println(a []PlumType) (PlumType, error) {
 }
 
 func slurp(a []PlumType) (PlumType, error) {
-	b, e := ioutil.ReadFile(a[0].(string))
-	if e != nil {
-		return nil, e
+	switch fileName := a[0].(type) {
+	case string:
+		b, e := ioutil.ReadFile(fileName)
+		if e != nil {
+			return nil, e
+		}
+		return string(b), nil
+
 	}
-	return string(b), nil
+	return nil, nil
+
 }
 
 // Number functions

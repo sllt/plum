@@ -62,16 +62,17 @@ func read_atom(rdr Reader) (PlumType, error) {
 		var i int
 		var e error
 		if i, e = strconv.Atoi(*token); e != nil {
-			return nil, errors.New("number parse error 1")
-		}
-		return i, nil
-	} else if match, _ := regexp.MatchString(`[\-\+]?[0-9]*\.([0-9]+)?`, *token); match {
-		var i float64
-		var e error
-		if i, e = strconv.ParseFloat(*token, 64); e != nil {
 			return nil, errors.New("number parse error")
 		}
 		return i, nil
+		// } else if match, _ := regexp.MatchString(`[\-\+]?[0-9]*\.([0-9]+)?`, *token); match {
+		// 	var i float64
+		// 	var e error
+		// 	if i, e = strconv.ParseFloat(*token, 64); e != nil {
+		// 		return nil, errors.New("number parse error")
+		// 	}
+		// 	return i, nil
+		// }
 	} else if (*token)[0] == '"' {
 		str := (*token)[1 : len(*token)-1]
 		return strings.Replace(
