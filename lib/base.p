@@ -20,3 +20,6 @@
       init)))
 
 (defmacro defn (fn* [name args body] `(define ~name (fn* ~args ~body))))
+
+(defun quit [] 
+    (exit 0))

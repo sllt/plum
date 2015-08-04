@@ -565,4 +565,5 @@ var NS = map[string]PlumType{
 	"reset!": reset_BANG,
 	"swap!":  swap_BANG,
 	"exec":   Exec,
+	"exit":   Exit,
 }
