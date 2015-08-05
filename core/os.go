@@ -3,9 +3,9 @@ package core
 import (
 	"errors"
 	"fmt"
+	. "github.com/sllt/plum/types"
 	"os"
 	"os/exec"
-	. "plum/types"
 	"strings"
 )
 
