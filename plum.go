@@ -8,13 +8,13 @@ import (
 )
 
 import (
-	"plum/constants"
-	"plum/core"
-	. "plum/env"
-	"plum/printer"
-	"plum/reader"
-	"plum/readline"
-	. "plum/types"
+	"github.com/sllt/plum/constants"
+	"github.com/sllt/plum/core"
+	. "github.com/sllt/plum/env"
+	"github.com/sllt/plum/printer"
+	"github.com/sllt/plum/reader"
+	"github.com/sllt/plum/readline"
+	. "github.com/sllt/plum/types"
 )
 
 // read
