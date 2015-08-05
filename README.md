@@ -2,8 +2,7 @@ Plum [![Build Status](https://travis-ci.org/sllt/plum.svg?branch=master)](https:
 =======================
 Yet another lisp-like programming language.
 
-Overview
-=======================
+# Overview
 
 ```racket
 ;; functions
@@ -37,8 +36,21 @@ Overview
 
 ```
 
-目标
-==================================
+# Install
+
+```
+1. install readline
+sudo apt-get install libedit-dev
+
+2. install this repo
+
+go install github.com/sllt/plum
+
+
+```
+
+# 目标
+
 * 支持宏
 * 尾递归优化
 * 并发
