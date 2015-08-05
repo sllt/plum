@@ -1,4 +1,4 @@
-Plum
+Plum [![Build Status](https://travis-ci.org/sllt/plum.svg?branch=master)](https://travis-ci.org/sllt/plum)
 =======================
 Yet another lisp-like programming language.
 
